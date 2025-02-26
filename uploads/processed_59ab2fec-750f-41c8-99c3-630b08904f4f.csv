@@ -1,0 +1,7 @@
+Product Name,Input Image URL,Output Image URL,Status
+SKU1,https://images.pexels.com/photos/1198802/pexels-photo-1198802.jpeg,https://res.cloudinary.com/dz1z9i5yv/image/upload/v1740572598/image_processing/tlxl4hzhh2dozsslnnny.jpg,completed
+SKU1,https://images.pexels.com/photos/60597/dahlia-red-blossom-bloom-60597.jpeg,https://res.cloudinary.com/dz1z9i5yv/image/upload/v1740572613/image_processing/vdpmfp39begchoplwem3.jpg,completed
+SKU1,https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg,https://res.cloudinary.com/dz1z9i5yv/image/upload/v1740572622/image_processing/nqi5ihijpynriyq1ynza.jpg,completed
+SKU2,https://images.pexels.com/photos/1198802/pexels-photo-1198802.jpeg,https://res.cloudinary.com/dz1z9i5yv/image/upload/v1740572606/image_processing/jcurearkljfnyrmc1n62.jpg,completed
+SKU2,https://images.pexels.com/photos/372166/pexels-photo-372166.jpeg,https://res.cloudinary.com/dz1z9i5yv/image/upload/v1740572617/image_processing/m48vsqgjxp016d3tiop3.jpg,completed
+SKU2,https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg,https://res.cloudinary.com/dz1z9i5yv/image/upload/v1740572642/image_processing/fbbavassyvku1tcwqqh2.jpg,completed

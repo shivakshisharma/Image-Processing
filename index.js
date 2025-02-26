@@ -1,22 +1,24 @@
+
 const express = require('express');
-const multer = require('multer');
-const { sequelize } = require('./config/database');
+const { sequelize, Product, Image, Request } = require('./models');  // Import models from centralized index
 require('dotenv').config();
 
 const app = express();
-const upload = multer({ dest: 'uploads/' });
 
 app.use(express.json());
 
 // Import Routes
 const uploadRoutes = require('./routes/uploadRoutes');
-app.use('/api', uploadRoutes);
+const statusRoutes = require('./routes/statusRoutes');
 
-// Database Connection
+app.use('/api', uploadRoutes);
+app.use('/api', statusRoutes); // Register the Status API
+
+// Sync models
 sequelize.sync().then(() => {
-    console.log('PostgreSQL Database synced successfully');
+    console.log('Database synced');
 }).catch(err => {
-    console.error('Database sync error:', err);
+    console.error('Error syncing database:', err);
 });
 
 const PORT = process.env.PORT || 3000;
