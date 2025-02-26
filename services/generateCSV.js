@@ -1,64 +1,8 @@
-// const { createObjectCsvWriter } = require('csv-writer');
-// const Product = require('../models/Product'); // ✅ Make sure Product is imported here
-// const Image = require('../models/Image');
-// const Request = require('../models/Request');
-// const path = require('path');
-
-// async function generateCSV(requestId) {
-//     try {
-//         // Fetch all the products for the request
-//         const products = await Product.findAll({
-//             where: { requestId },
-//         });
-
-//         // Fetch images for these products manually with a join
-//         const images = await Image.findAll({
-//             where: {
-//                 productId: products.map(product => product.id), // Get the product IDs
-//             }
-//         });
-
-//         const csvWriter = createObjectCsvWriter({
-//             path: path.join(__dirname, `../uploads/processed_${requestId}.csv`),
-//             header: [
-//                 { id: 'productName', title: 'Product Name' },
-//                 { id: 'inputUrl', title: 'Input Image URL' },
-//                 { id: 'outputUrl', title: 'Output Image URL' },
-//                 { id: 'status', title: 'Status' }
-//             ]
-//         });
-
-//         // Create an array to hold the CSV data
-//         const records = [];
-//         products.forEach(product => {
-//             // Get the images for this product
-//             const productImages = images.filter(img => img.productId === product.id);
-//             productImages.forEach(image => {
-//                 records.push({
-//                     productName: product.name,
-//                     inputUrl: image.inputUrl,
-//                     outputUrl: image.outputUrl,
-//                     status: image.status
-//                 });
-//             });
-//         });
-
-//         // Write to CSV
-//         await csvWriter.writeRecords(records);
-//         console.log(`✅ CSV file generated for request ${requestId}`);
-
-//         return path.join(__dirname, `../uploads/processed_${requestId}.csv`);
-//     } catch (error) {
-//         console.error('❌ Error generating CSV:', error);
-//         throw error;
-//     }
-// }
-
-// module.exports = generateCSV;
 
 const fs = require('fs');
 const Product = require('../models/Product');
 const Image = require('../models/Image');
+const { uploadCsvToCloudinary } = require('./cloudinaryService');  // Import existing Cloudinary config
 
 const generateCSV = async (requestId) => {
     try {
@@ -98,7 +42,15 @@ const generateCSV = async (requestId) => {
         fs.writeFileSync(filePath, csvContent);
 
         console.log(`✅ CSV generated successfully: ${filePath}`);
-        return filePath;
+
+            // Now upload the CSV to Cloudinary using existing config
+        const cloudinaryResult = await uploadCsvToCloudinary(filePath);
+
+        console.log(`✅ CSV uploaded to Cloudinary: ${cloudinaryResult.secure_url}`);
+
+        // You can now return the Cloudinary URL if needed
+        return cloudinaryResult.secure_url;
+
 
     } catch (error) {
         console.error(`❌ Error generating CSV: ${error.message}`);

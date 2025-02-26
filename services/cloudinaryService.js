@@ -16,6 +16,18 @@ const uploadImageToCloudinary = async (imagePath) => {
     }
 };
 
+// Function to upload CSV to Cloudinary
 
+const uploadCsvToCloudinary = (filePath) => {
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(filePath, { resource_type: 'raw' }, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
 
-module.exports = { uploadImageToCloudinary };
+module.exports = { uploadImageToCloudinary, uploadCsvToCloudinary };

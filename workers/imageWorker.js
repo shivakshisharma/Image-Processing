@@ -17,7 +17,7 @@ const generateCSV = require('../services/generateCSV'); // Import generateCSV
 const notifyWebhook = require('../services/webhook'); // Import notifyWebhook
 
 // Configure Redis connection
-const redisConnection = new Redis({ host: '127.0.0.1', port: 6379, maxRetriesPerRequest: null });
+const redisConnection = require('../config/redisConnection')
 
 const imageQueue = new Queue('imageProcessingQueue', { connection: redisConnection });
 
