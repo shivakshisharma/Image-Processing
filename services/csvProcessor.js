@@ -64,12 +64,12 @@ async function processCSV(filePath) {
         Request.create({ id: requestId, status: "pending" })
             .then(() => {
                 const imagePromises = [];
-                // console.log(`📥 Processing CSV: ${filePath}`);
+                // console.log(`Processing CSV: ${filePath}`);
 
                 fs.createReadStream(filePath)
                     .pipe(csv())
                     .on("data", (row) => {
-                        // console.log(`🔄 Processing row:`, row);
+                        // console.log(`rocessing row:`, row);
                         if (!row["Product Name"] || !row["Input Image Urls"]) return;
 
                         const productId = uuidv4();
@@ -85,7 +85,7 @@ async function processCSV(filePath) {
                                         inputUrl: url,
                                         status: "pending",
                                     }).then(() => {
-                                        // console.log(`🟢 Image queued for processing: ${url}`);
+                                        // console.log(`Image queued for processing: ${url}`);
                                         addToQueue(imageId, url, requestId);
                                     });
                                 }
@@ -93,7 +93,7 @@ async function processCSV(filePath) {
                             .catch((error) => console.error("❌ Error creating product:", error.message));
                     })
                     .on("end", () => {
-                        // console.log("📌 All images queued. Ensuring processing starts...");
+                        // console.log("All images queued. Ensuring processing starts...");
                         resolve(requestId);
                     })
                     .on("error", (error) => reject(error));

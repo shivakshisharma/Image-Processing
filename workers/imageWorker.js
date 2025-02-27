@@ -160,12 +160,12 @@ const processQueue = async () => {
         return;
     }
 
-    // console.log("🔄 Starting image processing queue...");
+    // console.log("Starting image processing queue...");
     isProcessing = true;
 
     while (imageQueue.length > 0) {
         const { imageId, inputUrl, requestId, webhookUrl } = imageQueue.shift();
-        // console.log(`🟡 Processing image from queue: ${inputUrl}`);
+        // console.log(`Processing image from queue: ${inputUrl}`);
 
         try {
             await processImage(imageId, inputUrl, requestId, webhookUrl);
@@ -176,11 +176,11 @@ const processQueue = async () => {
         }
     }
 
-    // console.log("✅ Queue processing completed.");
+    // console.log("Queue processing completed.");
     isProcessing = false;
 
     if (imageQueue.length > 0) {
-        // console.log("🔁 Queue has remaining tasks, restarting...");
+        // console.log("Queue has remaining tasks, restarting...");
         processQueue();
     }
 };
@@ -188,7 +188,7 @@ const processQueue = async () => {
 // Function to process a single image
 const processImage = async (imageId, inputUrl, requestId, webhookUrl) => {
     try {
-        // console.log(`🔄 Processing Image: ${inputUrl}`);
+        // console.log(`Processing Image: ${inputUrl}`);
         const imageRecord = await Image.findByPk(imageId);
         if (!imageRecord) throw new Error("Image record not found.");
 
@@ -200,10 +200,10 @@ const processImage = async (imageId, inputUrl, requestId, webhookUrl) => {
     
         const compressedImageBuffer = await sharp(imageBuffer)
         .jpeg({ quality: 50 })
-        .resize({ width: 800 }) // ✅ Reduce resolution
+        .resize({ width: 800 }) 
         .toBuffer();
 
-        // console.log("✅ Image processed successfully.");
+        // console.log("Image processed successfully.");
         const cloudinaryUrl = await uploadImageToCloudinary(compressedImageBuffer);
 
         await imageRecord.update({ outputUrl: cloudinaryUrl, status: "completed" });
@@ -233,7 +233,7 @@ const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
                 await notifyWebhook(webhookUrl, requestId, csvFilePath);
             }
         } else {
-            // console.log(`🔄 Request ${requestId}: Remaining Pending Images = ${pendingImages}`);
+            // console.log(`Request ${requestId}: Remaining Pending Images = ${pendingImages}`);
         }
     } catch (error) {
         console.error("❌ Error updating request status:", error.message);
@@ -243,7 +243,7 @@ const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
 // Function to add an image processing job to the queue
 const addToQueue = (imageId, inputUrl, requestId, webhookUrl) => {
     imageQueue.push({ imageId, inputUrl, requestId, webhookUrl });
-    // console.log(`🟢 Added image to queue: ${inputUrl} (Queue Length: ${imageQueue.length})`);
+    // console.log(`Added image to queue: ${inputUrl} (Queue Length: ${imageQueue.length})`);
     processQueue();
 };
 

@@ -5,8 +5,8 @@
 //     tls: { } // Ensure TLS is enabled
 // });
 
-// redisConnection.on("connect", () => console.log("✅ Connected to Redis!"));
-// redisConnection.on("error", (err) => console.error("❌ Redis Error:", err));
+// redisConnection.on("connect", () => console.log("Connected to Redis!"));
+// redisConnection.on("error", (err) => console.error("Redis Error:", err));
 
 // module.exports = { redisConnection };
 
