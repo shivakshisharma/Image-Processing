@@ -144,11 +144,11 @@ let isProcessing = false;
 // Helper function to download image
 const downloadImage = async (url) => {
     try {
-        console.log(`🔽 Downloading image: ${url}`);
+        // console.log(`🔽 Downloading image: ${url}`);
         const response = await axios({ url, responseType: "arraybuffer" });
         return Buffer.from(response.data);
     } catch (error) {
-        console.error(`❌ Error downloading image (${url}):`, error.message);
+        // console.error(`❌ Error downloading image (${url}):`, error.message);
         throw error;
     }
 };
@@ -156,16 +156,16 @@ const downloadImage = async (url) => {
 // Function to process the image queue sequentially
 const processQueue = async () => {
     if (isProcessing || imageQueue.length === 0) {
-        console.log(`⚠️ Queue not processing. isProcessing: ${isProcessing}, Queue Length: ${imageQueue.length}`);
+        // console.log(`⚠️ Queue not processing. isProcessing: ${isProcessing}, Queue Length: ${imageQueue.length}`);
         return;
     }
 
-    console.log("🔄 Starting image processing queue...");
+    // console.log("🔄 Starting image processing queue...");
     isProcessing = true;
 
     while (imageQueue.length > 0) {
         const { imageId, inputUrl, requestId, webhookUrl } = imageQueue.shift();
-        console.log(`🟡 Processing image from queue: ${inputUrl}`);
+        // console.log(`🟡 Processing image from queue: ${inputUrl}`);
 
         try {
             await processImage(imageId, inputUrl, requestId, webhookUrl);
@@ -174,11 +174,11 @@ const processQueue = async () => {
         }
     }
 
-    console.log("✅ Queue processing completed.");
+    // console.log("✅ Queue processing completed.");
     isProcessing = false;
 
     if (imageQueue.length > 0) {
-        console.log("🔁 Queue has remaining tasks, restarting...");
+        // console.log("🔁 Queue has remaining tasks, restarting...");
         processQueue();
     }
 };
@@ -186,7 +186,7 @@ const processQueue = async () => {
 // Function to process a single image
 const processImage = async (imageId, inputUrl, requestId, webhookUrl) => {
     try {
-        console.log(`🔄 Processing Image: ${inputUrl}`);
+        // console.log(`🔄 Processing Image: ${inputUrl}`);
         const imageRecord = await Image.findByPk(imageId);
         if (!imageRecord) throw new Error("Image record not found.");
 
@@ -195,12 +195,12 @@ const processImage = async (imageId, inputUrl, requestId, webhookUrl) => {
 
         const imageBuffer = await downloadImage(inputUrl);
 
-        console.log("🛠 Compressing image...");
+    
         const compressedImageBuffer = await sharp(imageBuffer)
             .jpeg({ quality: 50 })
             .toBuffer();
 
-        console.log("✅ Image processed successfully.");
+        // console.log("✅ Image processed successfully.");
         const cloudinaryUrl = await uploadImageToCloudinary(compressedImageBuffer);
 
         await imageRecord.update({ outputUrl: cloudinaryUrl, status: "completed" });
@@ -222,7 +222,7 @@ const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
         const pendingImages = await Image.count({ where: { productId: productIds, status: "pending" } });
 
         if (pendingImages === 0) {
-            console.log(`✅ Request ${requestId} completed.`);
+            
             await Request.update({ status: "completed" }, { where: { id: requestId } });
 
             const csvFilePath = await generateCSV(requestId);
@@ -244,6 +244,6 @@ const addToQueue = (imageId, inputUrl, requestId, webhookUrl) => {
     processQueue();
 };
 
-console.log("🔄 Image processing worker is running...");
+
 
 module.exports = { addToQueue, processImage };
