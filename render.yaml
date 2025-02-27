@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: image-processor
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: node server.js
+    swapMemory: 512MB  # ✅ Adds extra memory

@@ -199,8 +199,9 @@ const processImage = async (imageId, inputUrl, requestId, webhookUrl) => {
 
     
         const compressedImageBuffer = await sharp(imageBuffer)
-            .jpeg({ quality: 50 })
-            .toBuffer();
+        .jpeg({ quality: 50 })
+        .resize({ width: 800 }) // ✅ Reduce resolution
+        .toBuffer();
 
         // console.log("✅ Image processed successfully.");
         const cloudinaryUrl = await uploadImageToCloudinary(compressedImageBuffer);
