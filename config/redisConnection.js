@@ -2,7 +2,7 @@ const Redis = require("ioredis");
 require("dotenv").config();
 
 const redisConnection = new Redis(process.env.REDIS_URL, {
-    tls: { rejectUnauthorized: false } // Ensure TLS is enabled
+    tls: { } // Ensure TLS is enabled
 });
 
 redisConnection.on("connect", () => console.log("✅ Connected to Redis!"));
