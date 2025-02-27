@@ -1,6 +1,6 @@
 const fs = require('fs');
 const csv = require('csv-parser');
-const { v4: uuidv4 } = require('uuid'); // ✅ FIX: Import uuidv4
+const { v4: uuidv4 } = require('uuid'); 
 const { imageQueue } = require('../workers/imageWorker');
 const Request = require('../models/Request');
 const Product = require('../models/Product');
@@ -8,7 +8,7 @@ const Image = require('../models/Image');
 
 async function processCSV(filePath) {
     return new Promise((resolve, reject) => {
-        const requestId = uuidv4(); // ✅ Now uuidv4() is defined
+        const requestId = uuidv4(); 
 
         Request.create({ id: requestId, status: 'pending' })
             .then(async () => {
@@ -36,7 +36,7 @@ async function processCSV(filePath) {
                                 status: 'pending'
                             });
 
-                            // Add image to the processing queue
+                            // Adding image to the processing queue
                             await imageQueue.add('processImage', { imageId, inputUrl: url.trim() });
                             console.log(`🟢 Added image to queue: ${url.trim()}`);
                         }
@@ -48,4 +48,4 @@ async function processCSV(filePath) {
     });
 }
 
-module.exports = { processCSV }; // ✅ Ensure function is exported
+module.exports = { processCSV }; 

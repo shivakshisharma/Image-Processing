@@ -1,22 +1,20 @@
-
-
 const { Worker, Queue } = require('bullmq');
 const sharp = require('sharp');
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const axios = require('axios'); // Add axios for downloading images
+const axios = require('axios'); 
 const { sequelize } = require('../config/dbConfig');
 const Image = require('../models/Image');
 const Request = require('../models/Request');
 const Product = require('../models/Product');
 const Redis = require('ioredis');
 const { Op } = require('sequelize');
-const { uploadImageToCloudinary } = require('../services/cloudinaryService'); // Assuming this is a service for Cloudinary upload
-const generateCSV = require('../services/generateCSV'); // Import generateCSV
-const notifyWebhook = require('../services/webhook'); // Import notifyWebhook
+const { uploadImageToCloudinary } = require('../services/cloudinaryService'); 
+const generateCSV = require('../services/generateCSV'); 
+const notifyWebhook = require('../services/webhook'); 
 
-// Configure Redis connection
+// Configuring Redis connection
 const redisConnection = require('../config/redisConnection')
 
 const imageQueue = new Queue('imageProcessingQueue', { connection: redisConnection });
@@ -41,7 +39,7 @@ const downloadImage = async (url, outputPath) => {
     }
 };
 
-// Update request status after processing all images
+// Updating request status after processing all images
 const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
     try {
         // Get all products linked to the request
@@ -66,10 +64,10 @@ const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
             console.log(`✅ Request ${requestId} marked as completed.`);
             await Request.update({ status: 'completed' }, { where: { id: requestId } });
 
-            // ✅ Generate CSV after all images are processed
+            // Generate CSV after all images are processed
             const csvFilePath = await generateCSV(requestId);
 
-            // ✅ Notify webhook with the generated CSV
+            // Notify webhook with the generated CSV
             if (webhookUrl) {
                 await notifyWebhook(webhookUrl, requestId, csvFilePath);
             }
@@ -109,18 +107,17 @@ const imageWorker = new Worker('imageProcessingQueue', async (job) => {
 
         console.log(`✅ Image Processed: ${compressedImagePath}`);
 
-        // ✅ Upload compressed image to Cloudinary
+        // Uploading compressed image to Cloudinary
         const cloudinaryUrl = await uploadImageToCloudinary(compressedImagePath);
 
-        // ✅ Update image record in the database with the Cloudinary URL
+        //Updating image record in the database with the Cloudinary URL
         await imageRecord.update({ outputUrl: cloudinaryUrl, status: 'completed' });
 
-        // Delete the temporary downloaded image
+        // Deleting the temporary downloaded image
         fs.unlinkSync(tempImagePath);
         fs.unlinkSync(compressedImagePath); // Remove the compressed image from local storage
 
-        // ✅ Check and update request status using requestId
-        await checkAndUpdateRequestStatus(product.requestId, job.data.webhookUrl);  // FIXED: Passing correct request ID and webhook URL
+        await checkAndUpdateRequestStatus(product.requestId, job.data.webhookUrl);  
 
     } catch (error) {
         console.error('❌ Error processing image:', error);

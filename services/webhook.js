@@ -1,17 +1,17 @@
 // services/webhook.js
-const axios = require('axios');  // For HTTP requests
+const axios = require('axios');  
 const fs = require('fs');
-const FormData = require('form-data');  // For handling file uploads
+const FormData = require('form-data');  
 
 const notifyWebhook = async (webhookUrl, requestId, csvFilePath) => {
     try {
         const form = new FormData();
         form.append('requestId', requestId);
-        form.append('csvFile', fs.createReadStream(csvFilePath));  // Attach CSV file
+        form.append('csvFile', fs.createReadStream(csvFilePath));  
 
         const response = await axios.post(webhookUrl, form, {
             headers: {
-                ...form.getHeaders()  // Include headers required for form-data
+                ...form.getHeaders()  // Including headers required for form-data
             }
         });
 

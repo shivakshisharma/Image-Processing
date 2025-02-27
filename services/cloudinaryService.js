@@ -4,8 +4,8 @@ const cloudinary = require('../config/cloudinaryConfig');
 const uploadImageToCloudinary = async (imagePath) => {
     try {
         const result = await cloudinary.uploader.upload(imagePath, {
-            folder: 'image_processing',  // Customize the folder name as needed
-            quality: 'auto:good'         // Optional: Apply automatic quality optimization
+            folder: 'image_processing',  
+            quality: 'auto:good'         
         });
 
         console.log(`✅ Image uploaded to Cloudinary: ${result.secure_url}`);
