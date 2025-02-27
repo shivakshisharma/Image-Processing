@@ -230,7 +230,7 @@ const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
                 await notifyWebhook(webhookUrl, requestId, csvFilePath);
             }
         } else {
-            console.log(`🔄 Request ${requestId}: Remaining Pending Images = ${pendingImages}`);
+            // console.log(`🔄 Request ${requestId}: Remaining Pending Images = ${pendingImages}`);
         }
     } catch (error) {
         console.error("❌ Error updating request status:", error.message);
@@ -240,7 +240,7 @@ const checkAndUpdateRequestStatus = async (requestId, webhookUrl) => {
 // Function to add an image processing job to the queue
 const addToQueue = (imageId, inputUrl, requestId, webhookUrl) => {
     imageQueue.push({ imageId, inputUrl, requestId, webhookUrl });
-    console.log(`🟢 Added image to queue: ${inputUrl} (Queue Length: ${imageQueue.length})`);
+    // console.log(`🟢 Added image to queue: ${inputUrl} (Queue Length: ${imageQueue.length})`);
     processQueue();
 };
 
