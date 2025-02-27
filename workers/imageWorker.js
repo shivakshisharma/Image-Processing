@@ -169,6 +169,8 @@ const processQueue = async () => {
 
         try {
             await processImage(imageId, inputUrl, requestId, webhookUrl);
+            await new Promise((resolve) => setTimeout(resolve, 2000)); // ✅ Add delay to free memory
+
         } catch (error) {
             console.error("❌ Error in image processing:", error);
         }
