@@ -3,6 +3,7 @@ const express = require('express');
 const { sequelize, Product, Image, Request } = require('./models');  
 // Configuring Redis connection
 const redisConnection = require('./config/redisConnection')
+
 require('dotenv').config();
 
 const app = express();
