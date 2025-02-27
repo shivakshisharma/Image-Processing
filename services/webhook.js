@@ -15,8 +15,8 @@ const notifyWebhook = async (webhookUrl, requestId, csvFilePath) => {
             }
         });
 
-        console.log(`✅ Webhook notified with CSV for requestId: ${requestId}`);
-        console.log(`Response from webhook: ${response.status} ${response.statusText}`);
+        // console.log(`✅ Webhook notified with CSV for requestId: ${requestId}`);
+        // console.log(`Response from webhook: ${response.status} ${response.statusText}`);
     } catch (error) {
         console.error('❌ Error notifying webhook:', error);
     }

@@ -41,12 +41,12 @@ const generateCSV = async (requestId) => {
         const filePath = `./uploads/processed_images_${requestId}.csv`;
         fs.writeFileSync(filePath, csvContent);
 
-        console.log(`✅ CSV generated successfully: ${filePath}`);
+        // console.log(`✅ CSV generated successfully: ${filePath}`);
 
            
         const cloudinaryResult = await uploadCsvToCloudinary(filePath);
 
-        console.log(`✅ CSV uploaded to Cloudinary: ${cloudinaryResult.secure_url}`);
+        // console.log(`✅ CSV uploaded to Cloudinary: ${cloudinaryResult.secure_url}`);
 
         return cloudinaryResult.secure_url;
 

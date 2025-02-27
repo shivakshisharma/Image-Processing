@@ -26,7 +26,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     try {
-        console.log(`✅ Processing CSV: ${req.file.path}`);
+        // console.log(`✅ Processing CSV: ${req.file.path}`);
         const requestId = await processCSV(req.file.path); 
         res.json({ requestId });
     } catch (error) {
